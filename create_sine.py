@@ -65,3 +65,4 @@ if __name__ == "__main__":
     with open("a_tone.wav", "wb") as f:
         f.write(file_contents.getvalue()) # TODO: This is a bit nasty from an efficiency point of
                                           #       view, change this if using for production
+    file_contents.close()
