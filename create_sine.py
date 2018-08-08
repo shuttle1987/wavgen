@@ -1,6 +1,10 @@
 """Create a sine wave"""
 
 import math
+import wave
+import struct
+import io
+
 
 def create_sine(note: str="A", seconds: float=1, framerate: float=44100.00) -> list:
     """Create a sine wave representing the frequency of a piano note 
@@ -26,3 +30,30 @@ def create_sine(note: str="A", seconds: float=1, framerate: float=44100.00) -> l
         sine_list.append(math.sin(2*math.pi * freq * (x/framerate)))
     return sine_list
 
+
+def make_audio(audio_data, filename: str, framerate: float=44100.00, duration: float=1) -> io.BytesIO:
+    """Create a file with appropriate WAV magic bytes and encoding
+
+    :audio_data: raw frame data to be placed into the wav file
+    :filename: the filename that will be uploaded
+    :framerate: hertz
+    :duration: seconds this file will go for
+    """
+    amp = 8000.0 # amplitude
+    wav_data = io.BytesIO()
+    wav_file = wave.open(wav_data, "wb")
+    # wav params
+    nchannels = 1
+    sampwidth = 2
+    framerate = int(framerate)
+    nframes = int(framerate*duration)
+    comptype = "NONE"
+    compname = "not compressed"
+    wav_file.setparams((nchannels, sampwidth, framerate, nframes, comptype, compname))
+    # write the contents
+    for s in audio_data:
+        wav_file.writeframes(struct.pack('h', int(s*amp/2)))
+    wav_file.close()
+
+    # Seek to start of the audio stream data
+    wav_data.seek(0)
