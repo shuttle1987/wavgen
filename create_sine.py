@@ -5,6 +5,7 @@ import wave
 import struct
 import io
 
+from typing import Iterable
 
 def create_sine(*, note: str="A", seconds: float=1, framerate: float=44100.00) -> list:
     """Create a sine wave representing the frequency of a piano note 
@@ -31,7 +32,7 @@ def create_sine(*, note: str="A", seconds: float=1, framerate: float=44100.00) -
     return sine_list
 
 
-def make_audio(*, audio_data, framerate: float=44100.00, duration: float=1) -> io.BytesIO:
+def make_audio(*, audio_data: Iterable, framerate: float=44100.00, duration: float=1) -> io.BytesIO:
     """Create a file with appropriate WAV magic bytes and encoding
 
     :audio_data: raw frame data to be placed into the wav file
