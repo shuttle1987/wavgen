@@ -62,7 +62,9 @@ def make_audio(*, audio_data, framerate: float=44100.00, duration: float=1) -> i
 if __name__ == "__main__":
     a_tone = create_sine(note="A", seconds=1)
     file_contents = make_audio(audio_data=a_tone, duration=1)
-    with open("a_tone.wav", "wb") as f:
-        f.write(file_contents.getvalue()) # TODO: This is a bit nasty from an efficiency point of
-                                          #       view, change this if using for production
-    file_contents.close()
+    try:
+        with open("a_tone.wav", "wb") as f:
+            f.write(file_contents.getvalue()) # TODO: This is a bit nasty from an efficiency point of
+                                            #       view, change this if using for production
+    finally:
+        file_contents.close()
