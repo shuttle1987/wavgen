@@ -6,7 +6,7 @@ import struct
 import io
 
 
-def create_sine(note: str="A", seconds: float=1, framerate: float=44100.00) -> list:
+def create_sine(*, note: str="A", seconds: float=1, framerate: float=44100.00) -> list:
     """Create a sine wave representing the frequency of a piano note 
     in octave 4 using the A440 tuning"""
     note_to_freq = {
@@ -31,7 +31,7 @@ def create_sine(note: str="A", seconds: float=1, framerate: float=44100.00) -> l
     return sine_list
 
 
-def make_audio(audio_data, framerate: float=44100.00, duration: float=1) -> io.BytesIO:
+def make_audio(*, audio_data, framerate: float=44100.00, duration: float=1) -> io.BytesIO:
     """Create a file with appropriate WAV magic bytes and encoding
 
     :audio_data: raw frame data to be placed into the wav file
@@ -60,8 +60,8 @@ def make_audio(audio_data, framerate: float=44100.00, duration: float=1) -> io.B
 
 
 if __name__ == "__main__":
-    a_tone = create_sine("A", seconds=1)
-    file_contents = make_audio(a_tone, duration=1)
+    a_tone = create_sine(note="A", seconds=1)
+    file_contents = make_audio(audio_data=a_tone, duration=1)
     with open("a_tone.wav", "wb") as f:
         f.write(file_contents.getvalue()) # TODO: This is a bit nasty from an efficiency point of
                                           #       view, change this if using for production
